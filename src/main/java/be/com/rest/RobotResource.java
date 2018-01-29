@@ -3,10 +3,11 @@ package be.com.rest;
 import be.com.bean.RobotBean;
 
 import javax.annotation.PostConstruct;
-import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+
+import static java.lang.Integer.parseInt;
 
 @Path("/")
 public class RobotResource
@@ -43,6 +44,10 @@ public class RobotResource
     @Path("/{id}")
     public RobotBean getRobot(@PathParam("id") String id)
     {
+        int intId = parseInt(id);
+        if (intId  <= 0)
+            throw new WebApplicationException(404);
+
         if (id.equals(robotBean.getId()))
             return robotBean;
         else

@@ -1,9 +1,5 @@
 package be.com.rest;
 
-
-import javax.annotation.Resource;
-import javax.ejb.EJB;
-import javax.inject.Inject;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
 import javax.ws.rs.core.MediaType;
@@ -16,10 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
-
 
 public class RobotResourceTest extends JerseyTest
 {
@@ -40,13 +33,15 @@ public class RobotResourceTest extends JerseyTest
     }
 
     @Test
-    public void testGetRobot() {
-
-
+    public void getExistentRobot() {
         final RobotBean responseRobot = target().path("/10").request().get(RobotBean.class);
 
+        assertThat("We have a correct robot name ",responseRobot.getName(), equalTo(robotBean.getName()));
+    }
 
-        assertThat("Robot:Get has a correct name ",responseRobot.getName(), equalTo(robotBean.getName()));
+    @Test(expected = javax.ws.rs.NotFoundException.class)
+    public void getNonexistentRobot() {
+        final RobotBean responseRobot = target().path("/-1").request().get(RobotBean.class);
     }
 
     @Test
