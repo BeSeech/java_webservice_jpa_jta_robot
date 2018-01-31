@@ -4,7 +4,6 @@ import be.com.bean.RobotBean;
 import be.com.bean.RobotBeanService;
 import be.com.helpers.OperationResult;
 
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
@@ -35,10 +34,16 @@ public class RobotResource
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response putRobot(RobotBean newRobotBean)
+    public Response putRobot(RobotBean robotBean)
     {
-        return Response.status(100).build();
-//        return Response.ok(newRobotBean, MediaType.APPLICATION_JSON).build();
+        if (robotBean == null) {
+            throw new WebApplicationException(404);
+        }
+        OperationResult or = robotBeanService.updateRobot(robotBean);
+        if (or.isOk()) {
+            return Response.noContent().build();
+        }
+        throw new WebApplicationException(404);
     }
 
     @GET

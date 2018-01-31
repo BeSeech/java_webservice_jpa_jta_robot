@@ -2,11 +2,10 @@ package be.com.bean;
 
 import be.com.helpers.OperationResult;
 
-import java.util.ArrayList;
+import javax.ejb.Stateless;
 import java.util.HashMap;
-import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
+@Stateless
 public class RobotBeanService
 {
     private HashMap<String, RobotBean> robotBeanMap = new HashMap<String, RobotBean>();
@@ -29,6 +28,15 @@ public class RobotBeanService
     {
         if (getRobot(robotBean.getId()) != null) {
             return OperationResult.error("Robot with this id already exists");
+        }
+        robotBeanMap.put(robotBean.getId(), robotBean);
+        return OperationResult.ok();
+    }
+
+    public OperationResult updateRobot(RobotBean robotBean)
+    {
+        if (getRobot(robotBean.getId()) == null) {
+            return OperationResult.error("Robot is not found");
         }
         robotBeanMap.put(robotBean.getId(), robotBean);
         return OperationResult.ok();

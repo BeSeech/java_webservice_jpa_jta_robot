@@ -25,6 +25,7 @@ public class RobotResourceTest
     private String NOT_FOUND = "HTTP 404 Not Found";
     private RobotBean correctRobotBean;
     private RobotBean copyRobotBean;
+    private RobotBean deletedRobotBean;
 
     @Mock
     private RobotBeanService robotBeanService;
@@ -44,13 +45,18 @@ public class RobotResourceTest
         copyRobotBean = new RobotBean();
         copyRobotBean.setName("TDrone");
         copyRobotBean.setId("10");
+        deletedRobotBean = new RobotBean();
+        deletedRobotBean.setName("The old TDrone");
+        deletedRobotBean.setId("100");
 
         when(robotBeanService.getRobot("10")).thenReturn(correctRobotBean);
         when(robotBeanService.getRobot("-1")).thenReturn(null);
         when(robotBeanService.deleteRobot("10")).thenReturn(OperationResult.ok());
-        when(robotBeanService.deleteRobot("-1")).thenReturn(OperationResult.error("Robot not found"));
+        when(robotBeanService.deleteRobot("-1")).thenReturn(OperationResult.error("Robot is not found"));
         when(robotBeanService.addRobot(correctRobotBean)).thenReturn(OperationResult.ok());
         when(robotBeanService.addRobot(copyRobotBean)).thenReturn(OperationResult.error("Robot already exists"));
+        when(robotBeanService.updateRobot(correctRobotBean)).thenReturn(OperationResult.ok());
+        when(robotBeanService.updateRobot(deletedRobotBean)).thenReturn(OperationResult.error("Robot is not found"));
     }
 
     @Test
@@ -104,11 +110,29 @@ public class RobotResourceTest
     }
 
     @Test
-    public void testPutRobot()
+    public void testPutExistentRobot()
     {
         Response response = robotResource.putRobot(correctRobotBean);
 
-        assertThat("We can update correct robot", response.getStatus(), equalTo(204));
+        assertThat("We can update robot that exists", response.getStatus(), equalTo(204));
+    }
+
+    @Test
+    public void testPutNonexistentRobot()
+    {
+        exceptionRule.expect(WebApplicationException.class);
+        exceptionRule.expectMessage("404");
+
+        Response response = robotResource.putRobot(deletedRobotBean);
+    }
+
+    @Test
+    public void testPutNullAsRobot()
+    {
+        exceptionRule.expect(WebApplicationException.class);
+        exceptionRule.expectMessage("404");
+
+        Response response = robotResource.putRobot(null);
     }
 
 }
