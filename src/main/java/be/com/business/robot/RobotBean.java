@@ -1,10 +1,9 @@
-package be.com.bean.robot;
+package be.com.business.robot;
 
 import be.com.helpers.OperationResult;
 
 import javax.ejb.Stateless;
 import javax.xml.bind.annotation.XmlRootElement;
-import java.util.Arrays;
 
 @Stateless
 @XmlRootElement

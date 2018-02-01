@@ -1,10 +1,11 @@
-package be.com.rest;
+package be.com.presentation.robot;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import be.com.bean.robot.RobotBean;
-import be.com.bean.robot.RobotBeanService;
+import be.com.business.robot.RobotBean;
+import be.com.business.robot.RobotBeanService;
 import be.com.helpers.OperationResult;
+import be.com.presentation.Robot.RobotResource;
 import org.junit.Rule;
 import org.junit.rules.*;
 import org.junit.Before;

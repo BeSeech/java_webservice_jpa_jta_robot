@@ -1,4 +1,4 @@
-package be.com.bean.robot;
+package be.com.business.robot;
 
 import org.junit.Before;
 import org.junit.Test;

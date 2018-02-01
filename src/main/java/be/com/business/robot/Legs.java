@@ -1,4 +1,4 @@
-package be.com.bean.robot;
+package be.com.business.robot;
 
 import java.util.Vector;
 
