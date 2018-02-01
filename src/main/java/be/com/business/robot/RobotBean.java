@@ -2,6 +2,7 @@ package be.com.business.robot;
 
 import be.com.helpers.OperationResult;
 
+import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -36,6 +37,11 @@ public class RobotBean
     }
 
     public RobotBean()
+    {
+    }
+
+    @PostConstruct
+    private void init()
     {
         reset();
     }

@@ -47,6 +47,19 @@ public class RobotResource
     }
 
     @GET
+    @Path("/{id}/state")
+    @Produces(MediaType.TEXT_PLAIN)
+    public String getRobotState(@PathParam("id") String id) throws Exception
+    {
+        RobotBean robotBean = robotBeanService.getRobot(id);
+        if (robotBean == null) {
+            throw new WebApplicationException(404);
+        }
+        return robotBean.getState();
+    }
+
+
+    @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public RobotBean getRobot(@PathParam("id") String id)
