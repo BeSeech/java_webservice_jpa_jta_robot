@@ -2,8 +2,8 @@ package be.com.rest;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
-import be.com.bean.RobotBean;
-import be.com.bean.RobotBeanService;
+import be.com.bean.robot.RobotBean;
+import be.com.bean.robot.RobotBeanService;
 import be.com.helpers.OperationResult;
 import org.junit.Rule;
 import org.junit.rules.*;
@@ -37,7 +37,7 @@ public class RobotResourceTest
     public ExpectedException exceptionRule = ExpectedException.none();
 
     @Before
-    public void initRobot()
+    public void initRobot() throws Exception
     {
         correctRobotBean = new RobotBean();
         correctRobotBean.setName("TDrone");

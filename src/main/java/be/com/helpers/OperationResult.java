@@ -1,25 +1,37 @@
 package be.com.helpers;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class OperationResult
 {
+    public static OperationResult ok(String commentMessage)
+    {
+        return new OperationResult(true, "", commentMessage);
+    }
+
     public static OperationResult ok()
     {
-        return new OperationResult(true, "");
+        return OperationResult.ok("");
     }
+
 
     public static OperationResult error(String ErrorMessage)
     {
-        return new OperationResult(false, ErrorMessage);
+        return new OperationResult(false, ErrorMessage, "");
     }
 
     private Boolean result;
-    private String ErrorMessage;
+    private String errorMessage;
+    private String commentMessage;
 
-    private OperationResult(Boolean result, String ErrorMessage)
+    private OperationResult(Boolean result, String ErrorMessage, String commentMessage)
     {
         this.result = result;
-        this.ErrorMessage = ErrorMessage;
+        this.errorMessage = ErrorMessage;
+        this.commentMessage = commentMessage;
     }
+
 
     public Boolean getResult()
     {
@@ -28,7 +40,12 @@ public class OperationResult
 
     public String getErrorMessage()
     {
-        return ErrorMessage;
+        return errorMessage;
+    }
+
+    public String getCommentMessage()
+    {
+        return commentMessage;
     }
 
     public Boolean isOk()

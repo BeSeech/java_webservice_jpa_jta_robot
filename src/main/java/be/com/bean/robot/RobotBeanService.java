@@ -1,5 +1,6 @@
-package be.com.bean;
+package be.com.bean.robot;
 
+import be.com.bean.robot.RobotBean;
 import be.com.helpers.OperationResult;
 
 import javax.ejb.Stateless;

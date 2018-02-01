@@ -1,7 +1,7 @@
 package be.com.rest;
 
-import be.com.bean.RobotBean;
-import be.com.bean.RobotBeanService;
+import be.com.bean.robot.RobotBean;
+import be.com.bean.robot.RobotBeanService;
 import be.com.helpers.OperationResult;
 
 import javax.ejb.EJB;
