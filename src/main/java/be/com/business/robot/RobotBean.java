@@ -64,9 +64,9 @@ public class RobotBean
     public String getState()
     {
         if (isOk()) {
-            return "[Info] " + String.format("Robot position is %.2f m", position);
+            return "[Info] " + String.format("robot position is %.2f m", position);
         }
-        return "[Error] " + "Robot is broken";
+        return "[Error] " + "robot is broken";
     }
 
     public int[] getLegSequence()

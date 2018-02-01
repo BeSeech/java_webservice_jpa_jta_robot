@@ -1,4 +1,4 @@
-package be.com.presentation.Robot;
+package be.com.presentation.robot;
 
 import be.com.business.robot.RobotBean;
 import be.com.business.robot.RobotBeanService;
@@ -83,4 +83,37 @@ public class RobotResource
         throw new WebApplicationException(404);
     }
 
+    @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{id}/Do")
+    public String Do(@PathParam("id") String id, RobotAction action)
+    {
+        RobotBean robotBean = robotBeanService.getRobot(id);
+        if (robotBean == null) {
+            throw new WebApplicationException(404);
+        }
+
+        boolean isForward = action.getActionType() == ActionType.StepForward;
+        OperationResult or = robotBean.makeStep(action.getLegId(), isForward);
+        if (or.isOk()) {
+            return "[Info] " + or.getCommentMessage();
+        }
+        return "[Error] " + or.getErrorMessage();
+    }
+
+    @PUT
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/{id}/Reset")
+    public Response reset(@PathParam("id") String id)
+    {
+        RobotBean robotBean = robotBeanService.getRobot(id);
+        if (robotBean == null) {
+            throw new WebApplicationException(404);
+        }
+
+        robotBean.reset();
+
+        return Response.noContent().build();
+    }
 }

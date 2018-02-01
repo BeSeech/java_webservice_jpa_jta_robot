@@ -56,7 +56,7 @@ public class RobotBeanTest
     {
         robotBean.setName("A");
 
-        assertThat("Robot name is exactly what we set", robotBean.getName(), equalTo("A"));
+        assertThat("robot name is exactly what we set", robotBean.getName(), equalTo("A"));
     }
 
     @Test
@@ -94,7 +94,7 @@ public class RobotBeanTest
     @Test
     public void robotHasAValidInitialState()
     {
-        assertThat("Robot has a state", robotBean.getState(), equalTo(getInitialStateString()));
+        assertThat("robot has a state", robotBean.getState(), equalTo(getInitialStateString()));
     }
 
     @Test
@@ -150,12 +150,12 @@ public class RobotBeanTest
         moveOneSequenceForward(robotBean.getLegSequence());
         robotBean.reset();
 
-        assertThat("Robot has initial position after reset", robotBean.getState(), equalTo(getInitialStateString()));
+        assertThat("robot has initial position after reset", robotBean.getState(), equalTo(getInitialStateString()));
     }
 
     private Object getInitialStateString()
     {
-        return String.format("[Info] Robot position is 0%s00 m", decimalSep);
+        return String.format("[Info] robot position is 0%s00 m", decimalSep);
     }
 
     @Test
@@ -177,6 +177,6 @@ public class RobotBeanTest
         moveOneSequenceForward(halfLegSequence);
         moveOneSequenceBackward(halfLegSequence);
 
-        assertThat("Robot returned in initial position", robotBean.getState(), equalTo(getInitialStateString()));
+        assertThat("robot returned in initial position", robotBean.getState(), equalTo(getInitialStateString()));
     }
 }

@@ -5,7 +5,6 @@ import javax.ws.rs.core.Response;
 import be.com.business.robot.RobotBean;
 import be.com.business.robot.RobotBeanService;
 import be.com.helpers.OperationResult;
-import be.com.presentation.Robot.RobotResource;
 import org.junit.Rule;
 import org.junit.rules.*;
 import org.junit.Before;
@@ -13,6 +12,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.fail;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -27,6 +28,7 @@ public class RobotResourceTest
     private RobotBean correctRobotBean;
     private RobotBean copyRobotBean;
     private RobotBean deletedRobotBean;
+    private int[] legSequence = new int[] {0, 3, 1, 2};
 
     @Mock
     private RobotBeanService robotBeanService;
@@ -43,6 +45,7 @@ public class RobotResourceTest
         correctRobotBean = new RobotBean();
         correctRobotBean.setName("TDrone");
         correctRobotBean.setId("10");
+        correctRobotBean.setLegSequence(legSequence);
         copyRobotBean = new RobotBean();
         copyRobotBean.setName("TDrone");
         copyRobotBean.setId("10");
@@ -53,11 +56,56 @@ public class RobotResourceTest
         when(robotBeanService.getRobot("10")).thenReturn(correctRobotBean);
         when(robotBeanService.getRobot("-1")).thenReturn(null);
         when(robotBeanService.deleteRobot("10")).thenReturn(OperationResult.ok());
-        when(robotBeanService.deleteRobot("-1")).thenReturn(OperationResult.error("Robot is not found"));
+        when(robotBeanService.deleteRobot("-1")).thenReturn(OperationResult.error("robot is not found"));
         when(robotBeanService.addRobot(correctRobotBean)).thenReturn(OperationResult.ok());
-        when(robotBeanService.addRobot(copyRobotBean)).thenReturn(OperationResult.error("Robot already exists"));
+        when(robotBeanService.addRobot(copyRobotBean)).thenReturn(OperationResult.error("robot already exists"));
         when(robotBeanService.updateRobot(correctRobotBean)).thenReturn(OperationResult.ok());
-        when(robotBeanService.updateRobot(deletedRobotBean)).thenReturn(OperationResult.error("Robot is not found"));
+        when(robotBeanService.updateRobot(deletedRobotBean)).thenReturn(OperationResult.error("robot is not found"));
+    }
+
+    @Test
+    public void canMakeTrueStepForward()
+    {
+        RobotAction action = new RobotAction(ActionType.StepForward, 0);
+        String result = robotResource.Do("10", action);
+
+        assertThat("Robot make step forward", result, containsString("Info"));
+    }
+
+    @Test
+    public void canMakeTrueStepBackward()
+    {
+        RobotAction action = new RobotAction(ActionType.StepBackward, 0);
+        String result = robotResource.Do("10", action);
+
+        assertThat("Robot make step backward", result, containsString("Info"));
+    }
+
+    @Test
+    public void cantMakeStepByNonexistentRobot()
+    {
+        exceptionRule.expect(WebApplicationException.class);
+        exceptionRule.expectMessage("404");
+        RobotAction action = new RobotAction(ActionType.StepBackward, 0);
+
+        robotResource.Do("-10", action);
+    }
+
+    @Test
+    public void canResetRobotState()
+    {
+        Response response = robotResource.reset("10");
+
+        assertThat("We can reset state of existent robot", response.getStatus(), equalTo(204));
+    }
+
+    @Test
+    public void cantResetNonexistentRobotState()
+    {
+        exceptionRule.expect(WebApplicationException.class);
+        exceptionRule.expectMessage("404");
+
+        Response response = robotResource.reset("-1");
     }
 
     @Test

@@ -19,7 +19,7 @@ public class RobotBeanService
     {
         RobotBean result = robotBeanMap.remove(id);
         if (result == null) {
-            return OperationResult.error("Robot is not found");
+            return OperationResult.error("robot is not found");
         }
         return OperationResult.ok();
     }
@@ -27,7 +27,7 @@ public class RobotBeanService
     public OperationResult addRobot(RobotBean robotBean)
     {
         if (getRobot(robotBean.getId()) != null) {
-            return OperationResult.error("Robot with this id already exists");
+            return OperationResult.error("robot with this id already exists");
         }
         robotBeanMap.put(robotBean.getId(), robotBean);
         return OperationResult.ok();
@@ -36,7 +36,7 @@ public class RobotBeanService
     public OperationResult updateRobot(RobotBean robotBean)
     {
         if (getRobot(robotBean.getId()) == null) {
-            return OperationResult.error("Robot is not found");
+            return OperationResult.error("robot is not found");
         }
         robotBeanMap.put(robotBean.getId(), robotBean);
         return OperationResult.ok();
