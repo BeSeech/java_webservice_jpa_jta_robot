@@ -1,5 +1,9 @@
 package be.com.business.robot;
 
+import be.com.helpers.IntArrayTransformer;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Vector;
 
 class Legs
@@ -172,4 +176,24 @@ class Legs
             legs.add(new Leg(legSequence[i]));
         }
     }
+
+    @Override
+    public String toString()
+    {
+        return IntArrayTransformer.getString(this.getSequence(), ",", "[", "]");
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other == null)
+            return false;
+        if (other == this)
+            return true;
+        if (!(other instanceof Legs))
+            return false;
+        Legs otherLegs = (Legs)other;
+        return this.toString().equals(otherLegs.toString());
+    }
+
 }

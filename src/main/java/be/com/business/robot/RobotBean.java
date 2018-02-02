@@ -1,6 +1,8 @@
 package be.com.business.robot;
 
 import be.com.helpers.OperationResult;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
@@ -144,6 +146,24 @@ public class RobotBean
             setPosition(getPosition() - getStepDistance());
             return OperationResult.ok("Robot is moving backward");
         }
+    }
+    @Override
+    public String toString()
+    {
+        return new ReflectionToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE).toString();
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other == null)
+            return false;
+        if (other == this)
+            return true;
+        if (!(other instanceof RobotBean))
+            return false;
+        RobotBean otherRobot = (RobotBean)other;
+        return this.toString().equals(otherRobot.toString());
     }
 
 }

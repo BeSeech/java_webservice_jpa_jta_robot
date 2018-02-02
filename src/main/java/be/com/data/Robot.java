@@ -1,5 +1,7 @@
 package be.com.data;
 
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -51,5 +53,25 @@ public class Robot implements Serializable
     public void setLegSequence(String legSequence)
     {
         this.legSequence = legSequence;
+    }
+
+    @Override
+    public String toString()
+    {
+
+       return new ReflectionToStringBuilder(this, ToStringStyle.NO_CLASS_NAME_STYLE).toString();
+    }
+
+    @Override
+    public boolean equals(Object other)
+    {
+        if (other == null)
+            return false;
+        if (other == this)
+            return true;
+        if (!(other instanceof Robot))
+            return false;
+        Robot otherRobot = (Robot)other;
+        return this.toString().equals(otherRobot.toString());
     }
 }
