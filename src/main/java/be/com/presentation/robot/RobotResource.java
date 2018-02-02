@@ -21,7 +21,7 @@ public class RobotResource
     @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response postRobot(RobotBean newRobotBean)
+    public Response postRobot(RobotBean newRobotBean) throws Exception
     {
         OperationResult or = robotBeanService.addRobot(newRobotBean);
         if (or.isOk()) {
@@ -34,7 +34,7 @@ public class RobotResource
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response putRobot(RobotBean robotBean)
+    public Response putRobot(RobotBean robotBean) throws Exception
     {
         if (robotBean == null) {
             throw new WebApplicationException(404);
@@ -62,7 +62,7 @@ public class RobotResource
     @GET
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public RobotBean getRobot(@PathParam("id") String id)
+    public RobotBean getRobot(@PathParam("id") String id) throws Exception
     {
         RobotBean robotBean = robotBeanService.getRobot(id);
         if (robotBean == null) {
@@ -87,7 +87,7 @@ public class RobotResource
     @Produces(MediaType.TEXT_PLAIN)
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}/Do")
-    public String Do(@PathParam("id") String id, RobotAction action)
+    public String Do(@PathParam("id") String id, RobotAction action) throws Exception
     {
         RobotBean robotBean = robotBeanService.getRobot(id);
         if (robotBean == null) {
@@ -105,7 +105,7 @@ public class RobotResource
     @PUT
     @Produces(MediaType.TEXT_PLAIN)
     @Path("/{id}/Reset")
-    public Response reset(@PathParam("id") String id)
+    public Response reset(@PathParam("id") String id) throws Exception
     {
         RobotBean robotBean = robotBeanService.getRobot(id);
         if (robotBean == null) {

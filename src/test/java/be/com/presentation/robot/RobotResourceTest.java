@@ -64,7 +64,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void canMakeTrueStepForward()
+    public void canMakeTrueStepForward() throws Exception
     {
         RobotAction action = new RobotAction(ActionType.StepForward, 0);
         String result = robotResource.Do("10", action);
@@ -73,7 +73,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void canMakeTrueStepBackward()
+    public void canMakeTrueStepBackward() throws Exception
     {
         RobotAction action = new RobotAction(ActionType.StepBackward, 0);
         String result = robotResource.Do("10", action);
@@ -82,7 +82,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void cantMakeStepByNonexistentRobot()
+    public void cantMakeStepByNonexistentRobot() throws Exception
     {
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
@@ -92,7 +92,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void canResetRobotState()
+    public void canResetRobotState() throws Exception
     {
         Response response = robotResource.reset("10");
 
@@ -100,7 +100,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void cantResetNonexistentRobotState()
+    public void cantResetNonexistentRobotState() throws Exception
     {
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
@@ -109,7 +109,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void getExistentRobot()
+    public void getExistentRobot() throws Exception
     {
         RobotBean robot = robotResource.getRobot("10");
 
@@ -117,7 +117,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void getNonexistentRobot()
+    public void getNonexistentRobot() throws Exception
     {
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
@@ -143,7 +143,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void postNonexistentRobot()
+    public void postNonexistentRobot() throws Exception
     {
         Response response = robotResource.postRobot(correctRobotBean);
 
@@ -151,7 +151,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void postExistentRobot()
+    public void postExistentRobot() throws Exception
     {
         Response response = robotResource.postRobot(copyRobotBean);
 
@@ -159,7 +159,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void putExistentRobot()
+    public void putExistentRobot() throws Exception
     {
         Response response = robotResource.putRobot(correctRobotBean);
 
@@ -167,7 +167,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void putNonexistentRobot()
+    public void putNonexistentRobot() throws Exception
     {
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
@@ -176,7 +176,7 @@ public class RobotResourceTest
     }
 
     @Test
-    public void putNullAsRobot()
+    public void putNullAsRobot() throws Exception
     {
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
