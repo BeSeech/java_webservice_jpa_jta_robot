@@ -23,7 +23,7 @@ public class RobotResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response postRobot(RobotBean newRobotBean) throws Exception
     {
-        OperationResult or = robotBeanService.addRobot(newRobotBean);
+        OperationResult or = robotBeanService.addRobotBean(newRobotBean);
         if (or.isOk()) {
             return Response.noContent().build();
         }
@@ -39,7 +39,7 @@ public class RobotResource
         if (robotBean == null) {
             throw new WebApplicationException(404);
         }
-        OperationResult or = robotBeanService.updateRobot(robotBean);
+        OperationResult or = robotBeanService.updateRobotBean(robotBean);
         if (or.isOk()) {
             return Response.noContent().build();
         }
@@ -51,7 +51,7 @@ public class RobotResource
     @Produces(MediaType.TEXT_PLAIN)
     public String getRobotState(@PathParam("id") String id) throws Exception
     {
-        RobotBean robotBean = robotBeanService.getRobot(id);
+        RobotBean robotBean = robotBeanService.getRobotBean(id);
         if (robotBean == null) {
             throw new WebApplicationException(404);
         }
@@ -64,7 +64,7 @@ public class RobotResource
     @Produces(MediaType.APPLICATION_JSON)
     public RobotBean getRobot(@PathParam("id") String id) throws Exception
     {
-        RobotBean robotBean = robotBeanService.getRobot(id);
+        RobotBean robotBean = robotBeanService.getRobotBean(id);
         if (robotBean == null) {
             throw new WebApplicationException(404);
         }
@@ -89,7 +89,7 @@ public class RobotResource
     @Path("/{id}/Do")
     public String Do(@PathParam("id") String id, RobotAction action) throws Exception
     {
-        RobotBean robotBean = robotBeanService.getRobot(id);
+        RobotBean robotBean = robotBeanService.getRobotBean(id);
         if (robotBean == null) {
             throw new WebApplicationException(404);
         }
@@ -107,7 +107,7 @@ public class RobotResource
     @Path("/{id}/Reset")
     public Response reset(@PathParam("id") String id) throws Exception
     {
-        RobotBean robotBean = robotBeanService.getRobot(id);
+        RobotBean robotBean = robotBeanService.getRobotBean(id);
         if (robotBean == null) {
             throw new WebApplicationException(404);
         }

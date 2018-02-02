@@ -53,14 +53,14 @@ public class RobotResourceTest
         deletedRobotBean.setName("The old TDrone");
         deletedRobotBean.setId("100");
 
-        when(robotBeanService.getRobot("10")).thenReturn(correctRobotBean);
-        when(robotBeanService.getRobot("-1")).thenReturn(null);
+        when(robotBeanService.getRobotBean("10")).thenReturn(correctRobotBean);
+        when(robotBeanService.getRobotBean("-1")).thenReturn(null);
         when(robotBeanService.deleteRobot("10")).thenReturn(OperationResult.ok());
         when(robotBeanService.deleteRobot("-1")).thenReturn(OperationResult.error("robot is not found"));
-        when(robotBeanService.addRobot(correctRobotBean)).thenReturn(OperationResult.ok());
-        when(robotBeanService.addRobot(copyRobotBean)).thenReturn(OperationResult.error("robot already exists"));
-        when(robotBeanService.updateRobot(correctRobotBean)).thenReturn(OperationResult.ok());
-        when(robotBeanService.updateRobot(deletedRobotBean)).thenReturn(OperationResult.error("robot is not found"));
+        when(robotBeanService.addRobotBean(correctRobotBean)).thenReturn(OperationResult.ok());
+        when(robotBeanService.addRobotBean(copyRobotBean)).thenReturn(OperationResult.error("robot already exists"));
+        when(robotBeanService.updateRobotBean(correctRobotBean)).thenReturn(OperationResult.ok());
+        when(robotBeanService.updateRobotBean(deletedRobotBean)).thenReturn(OperationResult.error("robot is not found"));
     }
 
     @Test

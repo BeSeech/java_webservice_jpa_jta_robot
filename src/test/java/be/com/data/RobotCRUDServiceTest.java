@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.equalToObject;
 
 public class RobotCRUDServiceTest
 {
@@ -30,7 +29,7 @@ public class RobotCRUDServiceTest
     @Test
     public void weCanGetRobotFromRobotBean()
     {
-        Robot robot = RobotCRUDService.getRobot(standardRobotBean);
+        Robot robot = RobotCRUDService.getRobotFromDB(standardRobotBean);
 
         assertThat("robot is equal to standardRobot", robot, equalTo(standardRobot));
     }
@@ -44,7 +43,7 @@ public class RobotCRUDServiceTest
     }
 
     @Test
-    public void weCanMergeRobotBeanToRobot() throws Exception
+    public void weCanMergeRobotBeanToRobot()
     {
         Robot robot = new Robot();
 
