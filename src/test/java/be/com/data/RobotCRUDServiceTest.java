@@ -29,7 +29,7 @@ public class RobotCRUDServiceTest
     @Test
     public void weCanGetRobotFromRobotBean()
     {
-        Robot robot = RobotCRUDService.getRobotFromDB(standardRobotBean);
+        Robot robot = RobotCRUDService.getRobot(standardRobotBean);
 
         assertThat("robot is equal to standardRobot", robot, equalTo(standardRobot));
     }

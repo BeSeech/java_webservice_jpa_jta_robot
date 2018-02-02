@@ -13,8 +13,10 @@
             <property name="javax.persistence.jdbc.password" value="sa" />
 
             <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <property name="show_sql" value="true"/>
+            <property name="hibernate.default_schema" value="PUBLIC"></property>
+            <property name="show_sql" value="true"></property>
             <property name="hibernate.temp.use_jdbc_metadata_defaults" value="false"/>
+            <property name="hibernate.connection.driver_class" value="org.h2.Driver"></property>
         </properties>
     </persistence-unit>
 </persistence>
