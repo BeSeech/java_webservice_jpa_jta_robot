@@ -34,16 +34,17 @@ public class RobotResource
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response putRobot(RobotBean robotBean) throws Exception
+    public Response putRobot(@PathParam("id") String id, RobotBean robotBean) throws Exception
     {
         if (robotBean == null) {
             throw new WebApplicationException(404);
         }
+        robotBean.setId(id);
         OperationResult or = robotBeanService.updateRobotBean(robotBean);
         if (or.isOk()) {
             return Response.noContent().build();
         }
-        throw new WebApplicationException(404);
+        return Response.status(Response.Status.NOT_FOUND.getStatusCode(), or.getErrorMessage()).build();
     }
 
     @GET
@@ -80,7 +81,7 @@ public class RobotResource
         if (or.isOk()) {
             return Response.noContent().build();
         }
-        throw new WebApplicationException(404);
+        return Response.status(Response.Status.NOT_FOUND.getStatusCode(), or.getErrorMessage()).build();
     }
 
     @PUT

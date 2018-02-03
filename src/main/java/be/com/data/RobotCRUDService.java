@@ -67,23 +67,20 @@ public class RobotCRUDService
         return true;
     }
 
-    @Transactional
-    @TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
     public OperationResult insertRobotBean(RobotBean robotBean)
     {
-        //if (getRobotBean(robotBean.getId()) != null) {
-        //    return OperationResult.error("Robot with this id already exists");
-        //}
+        if (getRobotBean(robotBean.getId()) != null) {
+            return OperationResult.error("Robot with this id already exists");
+        }
         try {
             Robot robot = getRobot(robotBean);
-            //logger.debug("We're going to try persist the robot: " + robot.toString());
+            logger.debug("Saving to DB Robot: " + robot.toString());
             entityManager.persist(robot);
-            //logger.debug("We're going to try flush the robot: " + robot.toString());
             entityManager.flush();
-            //logger.debug("Flush is done");
         }
         catch (Exception ex)
         {
+            logger.error("Error in insertRobotBean(): "+ex);
             return OperationResult.error("Error in insertRobotBean(): "+ex.getMessage());
         }
         return OperationResult.ok();
@@ -107,13 +104,13 @@ public class RobotCRUDService
 
     public RobotBean getRobotBean(String id)
     {
-        logger.debug("Try to get robot with id: " + id);
+        //logger.debug("Try to get robot with id: " + id);
         Robot robot = getRobotFromDB(id);
         if (robot == null) {
-            logger.debug("Try to get robot with id result: null");
+            //logger.debug("Try to get robot with id result: null");
             return null;
         }
-        logger.debug("Try to get robot with id result: " + robot.toString());
+        //logger.debug("Try to get robot with id result: " + robot.toString());
         return getRobotBean(robot);
     }
 

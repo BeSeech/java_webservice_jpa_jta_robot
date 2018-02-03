@@ -67,14 +67,10 @@ public class RobotBeanService
 
     public OperationResult updateRobotBean(RobotBean robotBean) throws Exception
     {
-        if (!isRobotBeanInCash(robotBean.getId())) {
-            return OperationResult.error("Robot is not found");
-        }
         OperationResult or = robotCRUDService.updateRobotBean(robotBean);
         if (!or.isOk()) {
             return or;
         }
-
         robotBeanMap.put(robotBean.getId(), robotBean);
         return OperationResult.ok();
     }

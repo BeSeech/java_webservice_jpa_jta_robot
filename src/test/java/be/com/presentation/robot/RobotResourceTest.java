@@ -136,10 +136,9 @@ public class RobotResourceTest
     @Test
     public void deleteNonexistentRobot()
     {
-        exceptionRule.expect(WebApplicationException.class);
-        exceptionRule.expectMessage("404");
-
         Response response = robotResource.deleteRobot("-1");
+
+        assertThat("We can't delete robot that doesn't exist", response.getStatus(), equalTo(404));
     }
 
     @Test
@@ -161,7 +160,7 @@ public class RobotResourceTest
     @Test
     public void putExistentRobot() throws Exception
     {
-        Response response = robotResource.putRobot(correctRobotBean);
+        Response response = robotResource.putRobot(correctRobotBean.getId(), correctRobotBean);
 
         assertThat("We can update robot that exists", response.getStatus(), equalTo(204));
     }
@@ -169,10 +168,9 @@ public class RobotResourceTest
     @Test
     public void putNonexistentRobot() throws Exception
     {
-        exceptionRule.expect(WebApplicationException.class);
-        exceptionRule.expectMessage("404");
+        Response response = robotResource.putRobot(correctRobotBean.getId(), deletedRobotBean);
 
-        Response response = robotResource.putRobot(deletedRobotBean);
+        assertThat("We can't update robot that doesn't exist", response.getStatus(), equalTo(404));
     }
 
     @Test
@@ -181,7 +179,7 @@ public class RobotResourceTest
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
 
-        Response response = robotResource.putRobot(null);
+        Response response = robotResource.putRobot("", null);
     }
 
 }
