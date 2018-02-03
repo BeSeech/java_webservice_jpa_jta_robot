@@ -1,24 +1,20 @@
 package be.com.business.robot;
 
-import be.com.data.Robot;
 import be.com.data.RobotCRUDService;
 import be.com.helpers.OperationResult;
 
+import javax.annotation.PreDestroy;
 import javax.ejb.*;
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import java.util.HashMap;
 
-@Singleton
+@Stateless
 public class RobotBeanService
 {
-    private HashMap<String, RobotBean> robotBeanMap = new HashMap<String, RobotBean>();
+    private static HashMap<String, RobotBean> robotBeanMap = new HashMap<String, RobotBean>();
 
     @EJB
     RobotCRUDService robotCRUDService;
-
-    @PersistenceContext(unitName = "H2_PU")
-    private EntityManager entityManager;
 
     private boolean isRobotBeanInCash(String id)
     {
@@ -52,7 +48,7 @@ public class RobotBeanService
         return OperationResult.ok();
     }
 
-    public OperationResult addRobotBean(RobotBean robotBean) throws Exception
+    public OperationResult addRobotBean(RobotBean robotBean)
     {
         if (isRobotBeanInCash(robotBean.getId())) {
             return OperationResult.error("Robot with this id already exists");
@@ -81,5 +77,17 @@ public class RobotBeanService
 
         robotBeanMap.put(robotBean.getId(), robotBean);
         return OperationResult.ok();
+    }
+
+    @PreDestroy
+    public void destroy()
+    {
+        robotCRUDService.finished();
+    }
+
+    @Remove
+    public void finished()
+    {
+
     }
 }

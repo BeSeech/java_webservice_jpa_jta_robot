@@ -27,7 +27,7 @@ public class RobotResource
         if (or.isOk()) {
             return Response.noContent().build();
         }
-        return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), "Already exists").build();
+        return Response.status(Response.Status.BAD_REQUEST.getStatusCode(), or.getErrorMessage()).build();
     }
 
     @PUT
