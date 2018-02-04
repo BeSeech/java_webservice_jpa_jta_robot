@@ -1,6 +1,8 @@
 package be.com.business.robot;
 
 import be.com.helpers.OperationResult;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
@@ -12,8 +14,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 @Stateless
-@XmlRootElement
-@XmlAccessorType(XmlAccessType.FIELD)
 public class RobotBean
 {
     enum Direction
@@ -23,10 +23,12 @@ public class RobotBean
 
     private String id;
     private String name;
+
+    @JsonIgnore
     private Legs legs;
-    @XmlTransient
+    @JsonIgnore
     private double position = 0;
-    @XmlTransient
+    @JsonIgnore
     private boolean isBroken;
 
 
@@ -70,7 +72,7 @@ public class RobotBean
         position = newPosition;
     }
 
-    @XmlTransient
+    @JsonIgnore
     public String getState()
     {
         if (isOk()) {
@@ -79,6 +81,7 @@ public class RobotBean
         return "[Error] " + "robot is broken";
     }
 
+    @JsonFormat(shape = JsonFormat.Shape.ARRAY)
     public int[] getLegSequence()
     {
         return legs.getSequence();

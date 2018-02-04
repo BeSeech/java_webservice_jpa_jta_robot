@@ -5,5 +5,7 @@ timeout 1
 call mvn compile
 timeout 1
 call mvn package
-cd MvnBat
+timeout 1
+call mvn cargo:redeploy -X
+cd mvn_bat
 pause  

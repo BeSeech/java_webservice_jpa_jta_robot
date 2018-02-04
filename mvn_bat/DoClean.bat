@@ -1,5 +1,5 @@
 @echo off
 cd ..
 call mvn clean
-cd MvnBat
+cd mvn_bat
 pause
