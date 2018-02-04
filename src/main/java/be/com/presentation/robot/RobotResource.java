@@ -69,6 +69,7 @@ public class RobotResource
         if (robotBean == null) {
             throw new WebApplicationException(404);
         }
+
         return robotBean;
     }
 

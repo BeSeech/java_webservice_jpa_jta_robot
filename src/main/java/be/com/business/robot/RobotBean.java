@@ -6,10 +6,14 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 
 import javax.annotation.PostConstruct;
 import javax.ejb.Stateless;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 @Stateless
 @XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class RobotBean
 {
     enum Direction
@@ -19,9 +23,12 @@ public class RobotBean
 
     private String id;
     private String name;
-    private double position = 0;
     private Legs legs;
+    @XmlTransient
+    private double position = 0;
+    @XmlTransient
     private boolean isBroken;
+
 
     private boolean isBroken()
     {
@@ -63,6 +70,7 @@ public class RobotBean
         position = newPosition;
     }
 
+    @XmlTransient
     public String getState()
     {
         if (isOk()) {
@@ -93,7 +101,6 @@ public class RobotBean
     {
         this.id = id;
     }
-
 
     public String getName()
     {
@@ -165,5 +172,4 @@ public class RobotBean
         RobotBean otherRobot = (RobotBean)other;
         return this.toString().equals(otherRobot.toString());
     }
-
 }

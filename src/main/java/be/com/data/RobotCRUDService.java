@@ -5,7 +5,6 @@ import be.com.helpers.IntArrayTransformer;
 import be.com.helpers.OperationResult;
 import org.apache.log4j.Logger;
 
-import javax.annotation.Resource;
 import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

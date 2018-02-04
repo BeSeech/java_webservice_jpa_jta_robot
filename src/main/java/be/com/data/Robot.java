@@ -3,6 +3,7 @@ package be.com.data;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 
 @Entity
@@ -13,6 +14,7 @@ import java.io.Serializable;
                 query = "select o from Robot o where o.id=:id"
         )
 })
+@XmlRootElement
 public class Robot implements Serializable
 {
     @Id

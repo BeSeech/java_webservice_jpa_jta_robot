@@ -8,10 +8,10 @@ import javax.ejb.*;
 import javax.persistence.*;
 import java.util.HashMap;
 
-@Stateless
+@Singleton
 public class RobotBeanService
 {
-    private static HashMap<String, RobotBean> robotBeanMap = new HashMap<String, RobotBean>();
+    private HashMap<String, RobotBean> robotBeanMap = new HashMap<String, RobotBean>();
 
     @EJB
     RobotCRUDService robotCRUDService;
