@@ -2,6 +2,8 @@ package be.com.presentation.robot;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.SecurityContext;
+
 import be.com.business.robot.RobotBean;
 import be.com.business.robot.RobotBeanService;
 import be.com.helpers.OperationResult;
@@ -33,6 +35,9 @@ public class RobotResourceTest
     @Mock
     private RobotBeanService robotBeanService;
 
+    @Mock
+    private SecurityContext securityContext;
+
     @InjectMocks
     RobotResource robotResource;
 
@@ -52,6 +57,8 @@ public class RobotResourceTest
         deletedRobotBean = new RobotBean();
         deletedRobotBean.setName("The old TDrone");
         deletedRobotBean.setId("100");
+
+        when(securityContext.isSecure()).thenReturn(true);
 
         when(robotBeanService.getRobotBean("10")).thenReturn(correctRobotBean);
         when(robotBeanService.getRobotBean("-1")).thenReturn(null);
@@ -111,7 +118,7 @@ public class RobotResourceTest
     @Test
     public void getExistentRobot() throws Exception
     {
-        RobotBean robot = robotResource.getRobot("10");
+        RobotBean robot = robotResource.getRobot("10", securityContext);
 
         assertThat("We can get existent robot", robot.getName(), equalTo(correctRobotBean.getName()));
     }
@@ -122,7 +129,7 @@ public class RobotResourceTest
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
 
-        robotResource.getRobot("-1");
+        robotResource.getRobot("-1", securityContext);
     }
 
     @Test
