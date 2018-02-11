@@ -22,6 +22,8 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.when;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.security.Principal;
+
 
 @RunWith(MockitoJUnitRunner.class)
 public class RobotResourceTest
@@ -37,6 +39,9 @@ public class RobotResourceTest
 
     @Mock
     private SecurityContext securityContext;
+
+    @Mock
+    private Principal principal;
 
     @InjectMocks
     RobotResource robotResource;
@@ -58,7 +63,9 @@ public class RobotResourceTest
         deletedRobotBean.setName("The old TDrone");
         deletedRobotBean.setId("100");
 
+    //       when(principal.getName()).thenReturn("test user");
         when(securityContext.isSecure()).thenReturn(true);
+    //        when(securityContext.getUserPrincipal()).thenReturn(principal);
 
         when(robotBeanService.getRobotBean("10")).thenReturn(correctRobotBean);
         when(robotBeanService.getRobotBean("-1")).thenReturn(null);

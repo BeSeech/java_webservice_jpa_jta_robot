@@ -2,8 +2,14 @@ package be.com.presentation.robot;
 
 import be.com.business.robot.RobotBean;
 import be.com.business.robot.RobotBeanService;
+import be.com.data.RobotCRUDService;
 import be.com.helpers.OperationResult;
+import org.apache.log4j.Logger;
 
+import javax.annotation.security.DeclareRoles;
+import javax.annotation.security.DenyAll;
+import javax.annotation.security.PermitAll;
+import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
@@ -18,6 +24,8 @@ public class RobotResource
 {
     @EJB
     private RobotBeanService robotBeanService;
+
+    private static final Logger logger = Logger.getLogger(RobotCRUDService.class.getPackage().getName());
 
     @POST
     @Path("/secure/")
@@ -61,14 +69,16 @@ public class RobotResource
         return robotBean.getState();
     }
 
-
     @GET
     @Path("/secure/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public RobotBean getRobot(@PathParam("id") String id, @Context SecurityContext securityContext) throws Exception
     {
-        if (!securityContext.isSecure())
+        if (!securityContext.isSecure()) {
             throw new WebApplicationException(401);
+        }
+
+        //logger.info("Get Robot by user: " + securityContext.getUserPrincipal().getName());
 
         RobotBean robotBean = robotBeanService.getRobotBean(id);
         if (robotBean == null) {

@@ -27,11 +27,18 @@
         <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
+    <security-role>
+        <role-name>Administrator</role-name>
+    </security-role>
+    
     <security-constraint>
         <web-resource-collection>
             <web-resource-name>robot main</web-resource-name>
             <url-pattern>/secure/*</url-pattern>
         </web-resource-collection>
+        <auth-constraint>
+            <role-name>Administrator</role-name>
+        </auth-constraint>
         <user-data-constraint>
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
@@ -46,5 +53,10 @@
             <transport-guarantee>NONE</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+
+    <login-config>
+        <auth-method>DIGEST</auth-method>
+        <realm-name>RobotDBRealm</realm-name>
+    </login-config>
 
 </web-app>
