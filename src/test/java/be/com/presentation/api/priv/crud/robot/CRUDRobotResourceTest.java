@@ -1,4 +1,4 @@
-package be.com.presentation.robot;
+package be.com.presentation.api.priv.crud.robot;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.Response;
@@ -7,6 +7,7 @@ import javax.ws.rs.core.SecurityContext;
 import be.com.business.robot.RobotBean;
 import be.com.business.robot.RobotBeanService;
 import be.com.helpers.OperationResult;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.rules.*;
 import org.junit.Before;
@@ -24,11 +25,9 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.security.Principal;
 
-
 @RunWith(MockitoJUnitRunner.class)
-public class RobotResourceTest
+public class CRUDRobotResourceTest
 {
-    private String NOT_FOUND = "HTTP 404 Not Found";
     private RobotBean correctRobotBean;
     private RobotBean copyRobotBean;
     private RobotBean deletedRobotBean;
@@ -44,7 +43,7 @@ public class RobotResourceTest
     private Principal principal;
 
     @InjectMocks
-    RobotResource robotResource;
+    CRUDRobotResource crudRobotResource;
 
     @Rule
     public ExpectedException exceptionRule = ExpectedException.none();
@@ -63,9 +62,7 @@ public class RobotResourceTest
         deletedRobotBean.setName("The old TDrone");
         deletedRobotBean.setId("100");
 
-    //       when(principal.getName()).thenReturn("test user");
         when(securityContext.isSecure()).thenReturn(true);
-    //        when(securityContext.getUserPrincipal()).thenReturn(principal);
 
         when(robotBeanService.getRobotBean("10")).thenReturn(correctRobotBean);
         when(robotBeanService.getRobotBean("-1")).thenReturn(null);
@@ -78,54 +75,9 @@ public class RobotResourceTest
     }
 
     @Test
-    public void canMakeTrueStepForward() throws Exception
-    {
-        RobotAction action = new RobotAction(ActionType.StepForward, 0);
-        String result = robotResource.Do("10", action);
-
-        assertThat("Robot make step forward", result, containsString("Info"));
-    }
-
-    @Test
-    public void canMakeTrueStepBackward() throws Exception
-    {
-        RobotAction action = new RobotAction(ActionType.StepBackward, 0);
-        String result = robotResource.Do("10", action);
-
-        assertThat("Robot make step backward", result, containsString("Info"));
-    }
-
-    @Test
-    public void cantMakeStepByNonexistentRobot() throws Exception
-    {
-        exceptionRule.expect(WebApplicationException.class);
-        exceptionRule.expectMessage("404");
-        RobotAction action = new RobotAction(ActionType.StepBackward, 0);
-
-        robotResource.Do("-10", action);
-    }
-
-    @Test
-    public void canResetRobotState() throws Exception
-    {
-        Response response = robotResource.reset("10");
-
-        assertThat("We can reset state of existent robot", response.getStatus(), equalTo(204));
-    }
-
-    @Test
-    public void cantResetNonexistentRobotState() throws Exception
-    {
-        exceptionRule.expect(WebApplicationException.class);
-        exceptionRule.expectMessage("404");
-
-        Response response = robotResource.reset("-1");
-    }
-
-    @Test
     public void getExistentRobot() throws Exception
     {
-        RobotBean robot = robotResource.getRobot("10", securityContext);
+        RobotBean robot = crudRobotResource.getRobot("10", securityContext);
 
         assertThat("We can get existent robot", robot.getName(), equalTo(correctRobotBean.getName()));
     }
@@ -136,13 +88,13 @@ public class RobotResourceTest
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
 
-        robotResource.getRobot("-1", securityContext);
+        crudRobotResource.getRobot("-1", securityContext);
     }
 
     @Test
     public void deleteExistentRobot()
     {
-        Response response = robotResource.deleteRobot("10");
+        Response response = crudRobotResource.deleteRobot("10");
 
         assertThat("We can delete existent robot", response.getStatus(), equalTo(204));
     }
@@ -150,7 +102,7 @@ public class RobotResourceTest
     @Test
     public void deleteNonexistentRobot()
     {
-        Response response = robotResource.deleteRobot("-1");
+        Response response = crudRobotResource.deleteRobot("-1");
 
         assertThat("We can't delete robot that doesn't exist", response.getStatus(), equalTo(404));
     }
@@ -158,7 +110,7 @@ public class RobotResourceTest
     @Test
     public void postNonexistentRobot() throws Exception
     {
-        Response response = robotResource.postRobot(correctRobotBean);
+        Response response = crudRobotResource.postRobot(correctRobotBean);
 
         assertThat("We can add correct robot", response.getStatus(), equalTo(204));
     }
@@ -166,7 +118,7 @@ public class RobotResourceTest
     @Test
     public void postExistentRobot() throws Exception
     {
-        Response response = robotResource.postRobot(copyRobotBean);
+        Response response = crudRobotResource.postRobot(copyRobotBean);
 
         assertThat("We can't add robot that already exists", response.getStatus(), equalTo(400));
     }
@@ -174,7 +126,7 @@ public class RobotResourceTest
     @Test
     public void putExistentRobot() throws Exception
     {
-        Response response = robotResource.putRobot(correctRobotBean.getId(), correctRobotBean);
+        Response response = crudRobotResource.putRobot(correctRobotBean.getId(), correctRobotBean);
 
         assertThat("We can update robot that exists", response.getStatus(), equalTo(204));
     }
@@ -182,7 +134,7 @@ public class RobotResourceTest
     @Test
     public void putNonexistentRobot() throws Exception
     {
-        Response response = robotResource.putRobot(correctRobotBean.getId(), deletedRobotBean);
+        Response response = crudRobotResource.putRobot(correctRobotBean.getId(), deletedRobotBean);
 
         assertThat("We can't update robot that doesn't exist", response.getStatus(), equalTo(404));
     }
@@ -193,7 +145,7 @@ public class RobotResourceTest
         exceptionRule.expect(WebApplicationException.class);
         exceptionRule.expectMessage("404");
 
-        Response response = robotResource.putRobot("", null);
+        Response response = crudRobotResource.putRobot("", null);
     }
 
 }

@@ -1,4 +1,4 @@
-package be.com.presentation.robot;
+package be.com.presentation.api.priv.crud.robot;
 
 import be.com.business.robot.RobotBean;
 import be.com.business.robot.RobotBeanService;
@@ -6,21 +6,16 @@ import be.com.data.RobotCRUDService;
 import be.com.helpers.OperationResult;
 import org.apache.log4j.Logger;
 
-import javax.annotation.security.DeclareRoles;
-import javax.annotation.security.DenyAll;
-import javax.annotation.security.PermitAll;
-import javax.annotation.security.RolesAllowed;
 import javax.ejb.EJB;
+import javax.ejb.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
 
-import static java.lang.Integer.parseInt;
-
-@Path("/")
-public class RobotResource
+@Singleton
+public class CRUDRobotResource
 {
     @EJB
     private RobotBeanService robotBeanService;
@@ -28,7 +23,7 @@ public class RobotResource
     private static final Logger logger = Logger.getLogger(RobotCRUDService.class.getPackage().getName());
 
     @POST
-    @Path("/secure/")
+    @Path("/")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response postRobot(RobotBean newRobotBean) throws Exception
@@ -41,7 +36,7 @@ public class RobotResource
     }
 
     @PUT
-    @Path("/secure/{id}")
+    @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response putRobot(@PathParam("id") String id, RobotBean robotBean) throws Exception
@@ -58,27 +53,13 @@ public class RobotResource
     }
 
     @GET
-    @Path("/{id}/state")
-    @Produces(MediaType.TEXT_PLAIN)
-    public String getRobotState(@PathParam("id") String id) throws Exception
-    {
-        RobotBean robotBean = robotBeanService.getRobotBean(id);
-        if (robotBean == null) {
-            throw new WebApplicationException(404);
-        }
-        return robotBean.getState();
-    }
-
-    @GET
-    @Path("/secure/{id}")
+    @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public RobotBean getRobot(@PathParam("id") String id, @Context SecurityContext securityContext) throws Exception
     {
         if (!securityContext.isSecure()) {
             throw new WebApplicationException(401);
         }
-
-        //logger.info("Get Robot by user: " + securityContext.getUserPrincipal().getName());
 
         RobotBean robotBean = robotBeanService.getRobotBean(id);
         if (robotBean == null) {
@@ -90,7 +71,7 @@ public class RobotResource
 
     @DELETE
     @Produces(MediaType.TEXT_PLAIN)
-    @Path("/secure/{id}")
+    @Path("/{id}")
     public Response deleteRobot(@PathParam("id") String id)
     {
         OperationResult or = robotBeanService.deleteRobot(id);
@@ -98,39 +79,5 @@ public class RobotResource
             return Response.noContent().build();
         }
         return Response.status(Response.Status.NOT_FOUND.getStatusCode(), or.getErrorMessage()).build();
-    }
-
-    @PUT
-    @Produces(MediaType.TEXT_PLAIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Path("/{id}/do")
-    public String Do(@PathParam("id") String id, RobotAction action) throws Exception
-    {
-        RobotBean robotBean = robotBeanService.getRobotBean(id);
-        if (robotBean == null) {
-            throw new WebApplicationException(404);
-        }
-
-        boolean isForward = action.getActionType() == ActionType.StepForward;
-        OperationResult or = robotBean.makeStep(action.getLegId(), isForward);
-        if (or.isOk()) {
-            return "[Info] " + or.getCommentMessage();
-        }
-        return "[Error] " + or.getErrorMessage();
-    }
-
-    @PUT
-    @Produces(MediaType.TEXT_PLAIN)
-    @Path("/{id}/reset")
-    public Response reset(@PathParam("id") String id) throws Exception
-    {
-        RobotBean robotBean = robotBeanService.getRobotBean(id);
-        if (robotBean == null) {
-            throw new WebApplicationException(404);
-        }
-
-        robotBean.reset();
-
-        return Response.noContent().build();
     }
 }

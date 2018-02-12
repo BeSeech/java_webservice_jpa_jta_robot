@@ -1,4 +1,6 @@
-package be.com.presentation.robot;
+package be.com.presentation.helpers;
+
+import be.com.presentation.helpers.ActionType;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
