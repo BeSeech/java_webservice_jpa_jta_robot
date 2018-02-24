@@ -12,6 +12,7 @@ import javax.ejb.Singleton;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.net.ResponseCache;
 
 @Singleton
 public class RobotResource

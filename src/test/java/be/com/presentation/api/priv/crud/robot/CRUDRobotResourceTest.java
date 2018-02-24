@@ -6,6 +6,7 @@ import javax.ws.rs.core.SecurityContext;
 
 import be.com.business.robot.RobotBean;
 import be.com.business.robot.RobotBeanService;
+import be.com.data.Robot;
 import be.com.helpers.OperationResult;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -77,9 +78,8 @@ public class CRUDRobotResourceTest
     @Test
     public void getExistentRobot() throws Exception
     {
-        RobotBean robot = crudRobotResource.getRobot("10", securityContext);
-
-        assertThat("We can get existent robot", robot.getName(), equalTo(correctRobotBean.getName()));
+        RobotBean robotBean = crudRobotResource.getRobot("10", securityContext);
+        assertThat("We can get existent robot", robotBean.getName(), equalTo(correctRobotBean.getName()));
     }
 
     @Test

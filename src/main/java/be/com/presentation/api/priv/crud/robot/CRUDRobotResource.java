@@ -60,12 +60,11 @@ public class CRUDRobotResource
         if (!securityContext.isSecure()) {
             throw new WebApplicationException(401);
         }
-
         RobotBean robotBean = robotBeanService.getRobotBean(id);
+
         if (robotBean == null) {
             throw new WebApplicationException(404);
         }
-
         return robotBean;
     }
 

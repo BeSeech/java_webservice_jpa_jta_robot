@@ -69,6 +69,9 @@
             <role-name>Administrator</role-name>
         </auth-constraint>
         <user-data-constraint>
+            <!--
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+            -->
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
@@ -84,7 +87,7 @@
     </security-constraint>
 
     <login-config>
-        <auth-method>DIGEST</auth-method>
+        <auth-method>BASIC</auth-method>
         <realm-name>RobotDBRealm</realm-name>
     </login-config>
 
