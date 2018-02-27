@@ -63,7 +63,7 @@ public class CRUDRobotResourceTest
         deletedRobotBean.setName("The old TDrone");
         deletedRobotBean.setId("100");
 
-        when(securityContext.isSecure()).thenReturn(true);
+//        when(securityContext.isSecure()).thenReturn(true);
 
         when(robotBeanService.getRobotBean("10")).thenReturn(correctRobotBean);
         when(robotBeanService.getRobotBean("-1")).thenReturn(null);

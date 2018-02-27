@@ -57,9 +57,9 @@ public class CRUDRobotResource
     @Produces(MediaType.APPLICATION_JSON)
     public RobotBean getRobot(@PathParam("id") String id, @Context SecurityContext securityContext) throws Exception
     {
-        if (!securityContext.isSecure()) {
+/*        if (!securityContext.isSecure()) {
             throw new WebApplicationException(401);
-        }
+        }*/
         RobotBean robotBean = robotBeanService.getRobotBean(id);
 
         if (robotBean == null) {
