@@ -4,6 +4,7 @@ import be.com.business.robot.RobotBean;
 import be.com.business.robot.RobotBeanService;
 import be.com.data.RobotCRUDService;
 import be.com.helpers.OperationResult;
+import io.reactivex.Observable;
 import org.apache.log4j.Logger;
 
 import javax.ejb.EJB;
@@ -13,6 +14,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.SecurityContext;
+import java.util.ArrayList;
+import java.util.List;
 
 @Singleton
 public class CRUDRobotResource
@@ -28,6 +31,7 @@ public class CRUDRobotResource
     @Produces(MediaType.APPLICATION_JSON)
     public Response postRobot(RobotBean newRobotBean) throws Exception
     {
+        logger.info("Post request: " + newRobotBean.toString());
         OperationResult or = robotBeanService.addRobotBean(newRobotBean);
         if (or.isOk()) {
             return Response.noContent().build();
@@ -50,6 +54,15 @@ public class CRUDRobotResource
             return Response.noContent().build();
         }
         return Response.status(Response.Status.NOT_FOUND.getStatusCode(), or.getErrorMessage()).build();
+    }
+
+    @GET
+    @Path("/")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<RobotBean> getRobot(@Context SecurityContext securityContext) throws Exception
+    {
+        Observable<RobotBean> obs = robotBeanService.getRobotBeans();
+        return obs.toList().blockingGet();
     }
 
     @GET

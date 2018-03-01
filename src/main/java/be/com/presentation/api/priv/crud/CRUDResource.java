@@ -15,7 +15,7 @@ public class CRUDResource
     @EJB
     CRUDRobotResource CRUDRobotResource;
 
-    @Path("/robot")
+    @Path("/robots")
     public CRUDRobotResource getCRUDRobotResource()
     {
         return CRUDRobotResource;

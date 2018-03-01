@@ -12,6 +12,11 @@ import java.io.Serializable;
         @NamedQuery(
                 name = "Robot.findById",
                 query = "select o from Robot o where o.id=:id"
+        ),
+
+        @NamedQuery(
+                name = "Robot.findAllRobots",
+                query = "select o from Robot o"
         )
 })
 @XmlRootElement

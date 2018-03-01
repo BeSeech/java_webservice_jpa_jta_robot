@@ -9,6 +9,7 @@ import javax.ejb.*;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.*;
+import java.util.List;
 
 @Stateless
 public class RobotCRUDService
@@ -27,15 +28,10 @@ public class RobotCRUDService
 
     public static RobotBean getRobotBean(Robot robot)
     {
-        //logger.debug("We in getRobotBean(" + robot.toString() + ")");
-
         RobotBean robotBean = new RobotBean();
-        //logger.debug("We're going to try merge");
         if (merge(robot, robotBean)) {
-            //logger.debug("The trying to merge returned false");
             return robotBean;
         }
-        //logger.debug("The trying to merge returned false");
         return null;
     }
 
@@ -49,20 +45,14 @@ public class RobotCRUDService
 
     public static boolean merge(Robot fromRobot, RobotBean toRobotBean)
     {
-        //logger.debug("We in merge( from:" + fromRobot.toString() +"; to: RobotBean )");
         try {
-            //logger.debug("We're going to toRobotBean.setId("+fromRobot.getId()+")");
             toRobotBean.setId(fromRobot.getId());
-            //logger.debug("We're going to toRobotBean.setName("+fromRobot.getName()+")");
             toRobotBean.setName(fromRobot.getName());
-            //logger.debug("We're going to toRobotBean.setLegSequence("+fromRobot.getLegSequence()+")");
             toRobotBean.setLegSequence(IntArrayTransformer.getArray(fromRobot.getLegSequence(), ",", "", ""));
         }
         catch (Exception ex) {
-            //logger.debug("As the result we have an exception:"+ex.getMessage()+")");
             return false;
         }
-        //logger.debug("The merge is done");
         return true;
     }
 
@@ -73,13 +63,11 @@ public class RobotCRUDService
         }
         try {
             Robot robot = getRobot(robotBean);
-            logger.debug("Saving to DB Robot: " + robot.toString());
             entityManager.persist(robot);
             entityManager.flush();
         }
         catch (Exception ex)
         {
-            logger.error("Error in insertRobotBean(): "+ex);
             return OperationResult.error("Error in insertRobotBean(): "+ex.getMessage());
         }
         return OperationResult.ok();
@@ -87,29 +75,35 @@ public class RobotCRUDService
 
     private Robot getRobotFromDB(String id)
     {
-        //logger.debug("We in getRobotFromDB(" + id + ")");
         Robot robot = null;
         try {
             robot = entityManager.createNamedQuery("Robot.findById", Robot.class).setParameter("id", id).getSingleResult();
-            //logger.debug("Try to get robot with id: " + id);
         }
         catch (Exception ex) {
-            //logger.debug("Try to get robot with id lead to exception: " + ex.getMessage());
             return null;
         }
-        //logger.debug("Try to get robot with id result: " + robot.toString());
         return robot;
     }
 
-    public RobotBean getRobotBean(String id)
+    public List<Robot> getRobotsFromDB()
     {
-        //logger.debug("Try to get robot with id: " + id);
-        Robot robot = getRobotFromDB(id);
-        if (robot == null) {
-            //logger.debug("Try to get robot with id result: null");
+        List<Robot> robotList = null;
+        try {
+            robotList = entityManager.createNamedQuery("Robot.findAllRobots", Robot.class).getResultList();
+        }
+        catch (Exception ex) {
             return null;
         }
-        //logger.debug("Try to get robot with id result: " + robot.toString());
+            return robotList;
+    }
+
+
+    public RobotBean getRobotBean(String id)
+    {
+        Robot robot = getRobotFromDB(id);
+        if (robot == null) {
+            return null;
+        }
         return getRobotBean(robot);
     }
 

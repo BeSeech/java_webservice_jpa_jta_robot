@@ -1,12 +1,15 @@
 package be.com.business.robot;
 
+import be.com.data.Robot;
 import be.com.data.RobotCRUDService;
 import be.com.helpers.OperationResult;
 
 import javax.annotation.PreDestroy;
 import javax.ejb.*;
-import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import io.reactivex.Observable;
 
 @Singleton
 public class RobotBeanService
@@ -85,5 +88,13 @@ public class RobotBeanService
     public void finished()
     {
 
+    }
+
+    public Observable<RobotBean> getRobotBeans()
+    {
+        Observable<RobotBean> obs =  Observable.fromArray(robotCRUDService.getRobotsFromDB())
+                .flatMapIterable( list -> list )
+                .map( robot -> RobotCRUDService.getRobotBean(robot));
+        return obs;
     }
 }

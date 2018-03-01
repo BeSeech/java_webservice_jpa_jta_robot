@@ -15,7 +15,7 @@ public class PublicResource
     @EJB
     RobotResource robotResource;
 
-    @Path("/robot")
+    @Path("/robots")
     public RobotResource getRobotResource()
     {
         return robotResource;

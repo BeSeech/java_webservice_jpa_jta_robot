@@ -207,6 +207,14 @@
             <version>2.3.1</version>
         </dependency>
 
+        <!-- Reactive -->
+        <dependency>
+            <groupId>io.reactivex.rxjava2</groupId>
+            <artifactId>rxjava</artifactId>
+            <version>2.1.10</version>
+        </dependency>
+
+
     </dependencies>
 
     <build>
